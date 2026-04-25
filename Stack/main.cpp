@@ -54,14 +54,19 @@ public:
 
     void reverse()
     {
-        Stack *newStack = new Stack();
-        while (!isEmpty())
+        Node *prev = nullptr;
+        Node *current = top;
+
+        while (current != nullptr)
         {
-            newStack->push(pop());
+            Node *next = current->prev;
+            current->prev = prev;
+
+            prev = current;
+            current = next;
         }
 
-        top = newStack->peek();
-        delete newStack;
+        top = prev;
     }
 
     bool isEmpty()
@@ -87,6 +92,14 @@ public:
 
         str += to_string(actual->value) + "]";
         cout << str << endl;
+    }
+
+    ~Stack()
+    {
+        while (!isEmpty())
+        {
+            pop();
+        }
     }
 };
 
