@@ -1,23 +1,24 @@
 #include <iostream>
 using namespace std;
 
-class Node
+template <typename T>
+struct Node
 {
-public:
-    int value;
-    Node *prev;
+    T value;
+    Node<T> *prev;
 
-    Node(int value)
+    Node(T value)
     {
         this->value = value;
         prev = nullptr;
     }
 };
 
+template <typename T>
 class Stack
 {
 private:
-    Node *top;
+    Node<T> *top;
 
 public:
     Stack()
@@ -25,41 +26,46 @@ public:
         top = nullptr;
     }
 
-    void push(int value)
+    void push(T value)
     {
-        Node *newNode = new Node(value);
+        Node<T> *newNode = new Node<T>(value);
         newNode->prev = top;
         top = newNode;
     }
 
-    int pop()
+    T pop()
     {
         if (isEmpty())
         {
             throw runtime_error("Stack Underflow!");
         }
 
-        Node *removedNode = top;
-        int removedValue = removedNode->value;
+        Node<T> *removedNode = top;
+        T removedValue = removedNode->value;
         top = top->prev;
         delete removedNode;
 
         return removedValue;
     }
 
-    Node *peek()
+    T peek()
     {
-        return top;
+        if (isEmpty())
+        {
+            throw runtime_error("Stack Underflow!");
+        }
+
+        return top->value;
     }
 
     void reverse()
     {
-        Node *prev = nullptr;
-        Node *current = top;
+        Node<T> *prev = nullptr;
+        Node<T> *current = top;
 
         while (current != nullptr)
         {
-            Node *next = current->prev;
+            Node<T> *next = current->prev;
             current->prev = prev;
 
             prev = current;
@@ -82,16 +88,15 @@ public:
             return;
         }
 
-        string str = "[";
-        Node *actual = top;
+        cout << "[";
+        Node<T> *actual = top;
         while (actual->prev != nullptr)
         {
-            str += to_string(actual->value) + ",";
+            cout << actual->value << ",";
             actual = actual->prev;
         }
 
-        str += to_string(actual->value) + "]";
-        cout << str << endl;
+        cout << actual->value << "]" << endl;
     }
 
     ~Stack()
@@ -105,7 +110,7 @@ public:
 
 int main()
 {
-    Stack stack = Stack();
+    Stack<int> stack = Stack<int>();
     stack.push(1);
     stack.push(2);
     stack.push(3);

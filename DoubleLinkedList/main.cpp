@@ -1,13 +1,13 @@
 #include <iostream>
 using namespace std;
-
+template <typename T>
 struct Node
 {
-    int value;
-    Node *prev;
-    Node *next;
+    T value;
+    Node<T> *prev;
+    Node<T> *next;
 
-    Node(int value)
+    Node(T value)
     {
         this->value = value;
         next = nullptr;
@@ -15,11 +15,12 @@ struct Node
     }
 };
 
+template <typename T>
 class DoubleLinkedList
 {
 private:
-    Node *head;
-    Node *tail;
+    Node<T> *head;
+    Node<T> *tail;
 
 public:
     DoubleLinkedList()
@@ -28,9 +29,9 @@ public:
         tail = nullptr;
     }
 
-    void appendLeft(int value)
+    void appendLeft(T value)
     {
-        Node *newNode = new Node(value);
+        Node<T> *newNode = new Node<T>(value);
         if (isEmpty())
         {
             head = newNode;
@@ -43,9 +44,9 @@ public:
         head = newNode;
     }
 
-    void appendRight(int value)
+    void appendRight(T value)
     {
-        Node *newNode = new Node(value);
+        Node<T> *newNode = new Node<T>(value);
         if (isEmpty())
         {
             head = newNode;
@@ -58,7 +59,7 @@ public:
         tail = newNode;
     }
 
-    int removeLeft()
+    T removeLeft()
     {
         if (isEmpty())
         {
@@ -67,7 +68,7 @@ public:
 
         if (head->next == nullptr)
         {
-            int removedValue = head->value;
+            T removedValue = head->value;
             delete head;
             head = nullptr;
             tail = nullptr;
@@ -75,8 +76,8 @@ public:
             return removedValue;
         }
 
-        Node *removedNode = head;
-        int removedValue = head->value;
+        Node<T> *removedNode = head;
+        T removedValue = head->value;
 
         head = head->next;
         head->prev = nullptr;
@@ -85,7 +86,7 @@ public:
         return removedValue;
     }
 
-    int removeRight()
+    T removeRight()
     {
         if (isEmpty())
         {
@@ -94,7 +95,7 @@ public:
 
         if (tail->prev == nullptr)
         {
-            int removedValue = tail->value;
+            T removedValue = tail->value;
             delete tail;
             tail = nullptr;
             head = nullptr;
@@ -102,8 +103,8 @@ public:
             return removedValue;
         }
 
-        Node *removedNode = tail;
-        int removedValue = tail->value;
+        Node<T> *removedNode = tail;
+        T removedValue = tail->value;
 
         tail = tail->prev;
         tail->next = nullptr;
@@ -125,16 +126,15 @@ public:
             return;
         }
 
-        string str = "[";
-        Node *actual = head;
+        cout << "[";
+        Node<T> *actual = head;
         while (actual->next != nullptr)
         {
-            str += to_string(actual->value) + ",";
+            cout << actual->value << ",";
             actual = actual->next;
         }
 
-        str += to_string(actual->value) + "]";
-        cout << str << endl;
+        cout << actual->value << "]" << endl;
     }
 
     void printReverse()
@@ -145,16 +145,15 @@ public:
             return;
         }
 
-        string str = "[";
-        Node *actual = tail;
+        cout << "[";
+        Node<T> *actual = tail;
         while (actual->prev != nullptr)
         {
-            str += to_string(actual->value) + ",";
+            cout << actual->value << ",";
             actual = actual->prev;
         }
 
-        str += to_string(actual->value) + "]";
-        cout << str << endl;
+        cout << actual->value << "]" << endl;
     }
 
     ~DoubleLinkedList()
@@ -168,13 +167,13 @@ public:
 
 int main()
 {
-    DoubleLinkedList doubleLinkedList = DoubleLinkedList();
-    doubleLinkedList.appendRight(1);
-    doubleLinkedList.appendRight(2);
-    doubleLinkedList.appendRight(3);
-    doubleLinkedList.appendRight(4);
-    doubleLinkedList.appendRight(5);
-    doubleLinkedList.appendLeft(6);
+    DoubleLinkedList<string> doubleLinkedList = DoubleLinkedList<string>();
+    doubleLinkedList.appendRight("1");
+    doubleLinkedList.appendRight("2");
+    doubleLinkedList.appendRight("3");
+    doubleLinkedList.appendRight("4");
+    doubleLinkedList.appendRight("5");
+    doubleLinkedList.appendLeft("6");
 
     doubleLinkedList.print();
     doubleLinkedList.printReverse();

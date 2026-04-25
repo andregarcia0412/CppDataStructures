@@ -1,22 +1,24 @@
 #include <iostream>
 using namespace std;
 
+template <typename T>
 struct Node
 {
-    int value;
-    Node *next;
+    T value;
+    Node<T> *next;
 
-    Node(int value)
+    Node(T value)
     {
         this->value = value;
         next = nullptr;
     }
 };
 
+template <typename T>
 class LinkedList
 {
 private:
-    Node *head;
+    Node<T> *head;
 
 public:
     LinkedList()
@@ -24,9 +26,9 @@ public:
         head = nullptr;
     }
 
-    void appendLeft(int value)
+    void appendLeft(T value)
     {
-        Node *newNode = new Node(value);
+        Node<T> *newNode = new Node<T>(value);
         if (isEmpty())
         {
             head = newNode;
@@ -37,16 +39,16 @@ public:
         head = newNode;
     }
 
-    void appendRight(int value)
+    void appendRight(T value)
     {
-        Node *newNode = new Node(value);
+        Node<T> *newNode = new Node<T>(value);
         if (isEmpty())
         {
             head = newNode;
             return;
         }
 
-        Node *actual = head;
+        Node<T> *actual = head;
 
         while (actual->next != nullptr)
         {
@@ -56,22 +58,22 @@ public:
         actual->next = newNode;
     }
 
-    int removeLeft()
+    T removeLeft()
     {
         if (isEmpty())
         {
             throw runtime_error("List Empty!");
         }
 
-        int removedValue = head->value;
-        Node *removedNode = head;
+        T removedValue = head->value;
+        Node<T> *removedNode = head;
         head = head->next;
 
         delete removedNode;
         return removedValue;
     }
 
-    int removeRight()
+    T removeRight()
     {
         if (isEmpty())
         {
@@ -80,19 +82,19 @@ public:
 
         if (head->next == nullptr)
         {
-            int removedValue = head->value;
+            T removedValue = head->value;
             delete head;
             head = nullptr;
             return removedValue;
         }
 
-        Node *actual = head;
+        Node<T> *actual = head;
         while (actual->next->next != nullptr)
         {
             actual = actual->next;
         }
 
-        int removedValue = actual->next->value;
+        T removedValue = actual->next->value;
         delete actual->next;
         actual->next = nullptr;
 
@@ -101,12 +103,12 @@ public:
 
     void reverse()
     {
-        Node *prev = nullptr;
-        Node *current = head;
+        Node<T> *prev = nullptr;
+        Node<T> *current = head;
 
         while (current != nullptr)
         {
-            Node *next = current->next;
+            Node<T> *next = current->next;
             current->next = prev;
 
             prev = current;
@@ -129,16 +131,15 @@ public:
             return;
         }
 
-        Node *actual = head;
-        string str = "[";
+        Node<T> *actual = head;
+        cout << "[";
         while (actual->next != nullptr)
         {
-            str += to_string(actual->value) + ",";
+            cout << actual->value << ",";
             actual = actual->next;
         }
 
-        str += to_string(actual->value) + "]";
-        cout << str << endl;
+        cout << actual->value << "]" << endl;
     }
 
     ~LinkedList()
@@ -152,7 +153,7 @@ public:
 
 int main()
 {
-    LinkedList linkedList = LinkedList();
+    LinkedList<int> linkedList = LinkedList<int>();
     linkedList.appendRight(1);
     linkedList.appendRight(2);
     linkedList.appendRight(3);
@@ -161,6 +162,8 @@ int main()
 
     linkedList.removeLeft();
     linkedList.removeRight();
+
+    linkedList.print();
 
     linkedList.appendLeft(6);
 
